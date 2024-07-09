@@ -1,0 +1,315 @@
+<h1 class="display-5">Berita Acara IT Change Management</h1>
+<div class="card" style="background-color: #f8f9fa;">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="card-title">Daftar BA</h3>
+    <div>
+      <button class="btn btn-sm btn-outline-primary" (click)="openModalAddBA()"><i class="bi bi-plus"></i> Tambah
+        BA</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" name="searchText" placeholder="Search Dokumen" aria-label="Search Dokumen"
+        aria-describedby="button-addon2">
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">No. Formulir</th>
+            <th scope="col">No. Ticket</th>
+            <th scope="col">No. DA</th>
+            <th scope="col">No. ITCM</th>
+            <th scope="col">Nama BA</th>
+            <th scope="col">Aplikasi</th>
+            <th scope="col">Dokumen</th>
+            <th scope="col">Project</th>
+            <th scope="col">Dilakukan Oleh</th>
+            <th scope="col">Didampingi Oleh</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="role_code === 'SA'">
+          <tr *ngFor="let itemFormBA of dataListAllBA let x = index">
+            <ng-container *ngIf="matchesSearch(itemFormBA)">
+              <td>{{ x+1 }}</td>
+              <td>{{ itemFormBA.form_number }}</td>
+              <td>{{ itemFormBA.form_ticket }}</td>
+              <td>{{ itemFormBA.no_da}}</td>
+              <td>{{ itemFormBA.no_itcm }}</td>
+              <td>{{ itemFormBA.judul }}</td>
+              <td>{{ itemFormBA.nama_aplikasi }}</td>
+              <td>{{ itemFormBA.document_name }}</td>
+              <td>{{ itemFormBA.project_name }}</td>
+              <td>{{ itemFormBA.dilakukan_oleh }}</td>
+              <td>{{ itemFormBA.didampingi_oleh }}</td>
+              <td>{{ itemFormBA.form_status }}</td>
+              <td>
+                <button class="btn btn-secondary"><i class="bi bi-clipboard2-check"></i></button>
+              </td>
+            </ng-container>
+          </tr>
+        </ng-container>
+
+        <ng-container *ngIf="role_code === 'A'">
+          <tr *ngFor="let itemFormBA of dataListAdminBA let x = index">
+            <ng-container *ngIf="matchesSearch(itemFormBA)">
+              <td>{{ x+1 }}</td>
+              <td>{{ itemFormBA.form_number }}</td>
+              <td>{{ itemFormBA.form_ticket }}</td>
+              <td>{{ itemFormBA.no_da}}</td>
+              <td>{{ itemFormBA.no_itcm }}</td>
+              <td>{{ itemFormBA.judul }}</td>
+              <td>{{ itemFormBA.nama_aplikasi }}</td>
+              <td>{{ itemFormBA.document_name }}</td>
+              <td>{{ itemFormBA.project_name }}</td>
+              <td>{{ itemFormBA.dilakukan_oleh }}</td>
+              <td>{{ itemFormBA.didampingi_oleh }}</td>
+              <td>{{ itemFormBA.form_status }}</td>
+              <td>
+                <button class="btn btn-warning" (click)="getSpecBAITCM(itemFormBA.form_uuid)"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-secondary"><i class="bi bi-clipboard2-check"></i></button>
+                <button class="btn btn-danger" (click)="onDeleteFormDA(itemFormBA.form_uuid)"><i class="bi bi-trash"></i></button>
+              </td>
+            </ng-container>
+          </tr>
+        </ng-container>
+
+        <ng-container *ngIf="role_code === 'M'">
+          <tr *ngFor="let itemFormBA of dataListUserBA let x = index">
+            <ng-container *ngIf="matchesSearch(itemFormBA)">
+              <td>{{ x+1 }}</td>
+              <td>{{ itemFormBA.form_number }}</td>
+              <td>{{ itemFormBA.form_ticket }}</td>
+              <td>{{ itemFormBA.no_da}}</td>
+              <td>{{ itemFormBA.no_itcm }}</td>
+              <td>{{ itemFormBA.judul }}</td>
+              <td>{{ itemFormBA.nama_aplikasi }}</td>
+              <td>{{ itemFormBA.document_name }}</td>
+              <td>{{ itemFormBA.project_name }}</td>
+              <td>{{ itemFormBA.dilakukan_oleh }}</td>
+              <td>{{ itemFormBA.didampingi_oleh }}</td>
+              <td>{{ itemFormBA.form_status }}</td>
+              <td>
+                <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-secondary"><i class="bi bi-clipboard2-check"></i></button>
+                <button class="btn btn-danger" (click)="onDeleteFormDA(itemFormBA.form_uuid)"><i class="bi bi-trash"></i></button>
+              </td>
+            </ng-container>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="addModalBA" tabindex="-1" aria-labelledby="addModalBA" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalBA">Tambah Formulir</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #addForm="ngForm">
+          <div class="row">
+            <h2 class="mb-3 display-7 text-center"><strong>Data form</strong></h2>
+            <div class="mb-3">
+              <label class="form-label">No. Tiket</label>
+              <input type="text" class="form-control" name="form_ticket" placeholder="Masukkan Nomer Tiket"
+                [(ngModel)]="form_ticket">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Pilih Project</label>
+              <select name="project_uuid" id="" class="form-select" [(ngModel)]="project_uuid">
+                <option value="" disabled selected>Pilih Project</option>
+                <option *ngFor="let project of dataListAllProject" [value]="project.project_uuid">{{
+                  project.project_name }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Judul</label>
+              <input type="text" class="form-control" name="judul" placeholder="Masukkan Judul" [(ngModel)]="judul">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Tanggal</label>
+              <div class="input-group mb-3">
+                <input type="date" name="tanggal" id="" class="form-control" [(ngModel)]="tanggal">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Nama Aplikasi</label>
+              <div class="input-group mb-3">
+                <input type="text" name="tanggal" id="nama_aplikasi" class="form-control" placeholder="Masukkan Nama Aplikasi" [(ngModel)]="nama_aplikasi">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">No. DA</label>
+              <div class="input-group mb-3">
+                <input type="text" name="tanggal" id="no_da" class="form-control" placeholder="Masukkan Nomor Form DA" [(ngModel)]="no_da">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">No. ITCM</label>
+              <div class="input-group mb-3">
+                <input type="text" name="tanggal" id="no_itcm" class="form-control" placeholder="Masukkan Nomor Form ITCM" [(ngModel)]="no_itcm">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Dilakukan Oleh</label>
+              <div class="input-group mb-3">
+                <input type="text" name="tanggal" id="dilakukan_oleh" class="form-control" placeholder="Masukkan Nama Orang yang melakukan" [(ngModel)]="dilakukan_oleh">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Didampingi Oleh</label>
+              <div class="input-group mb-3">
+                <input type="text" name="tanggal" id="didampingi_oleh" class="form-control" placeholder="Masukkan Nama Orang Pendamping" [(ngModel)]="didampingi_oleh">
+              </div>
+            </div>
+            
+            <h2 class="mb-3 display-7 text-center"><strong>Signature</strong></h2>
+
+          <div class="mb-3">
+            <label class="form-label">Pemohon</label>
+            <div class="input-group mb-3">
+              <select name="name1" id="" class="form-select" [(ngModel)]="name1">
+                <option value="" disabled selected>Pilih Person</option>
+                <option *ngFor="let user of dataListAllUser" [value]="user.user_id">{{ user.personal_name }}</option>
+              </select>
+            </div>
+            <div class="input-group mb-1">
+              <input type="text" class="form-control" placeholder="Masukkan Jabatan" [(ngModel)]="position1"
+                name="name1-position">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Atasan Pemohon</label>
+            <div class="input-group mb-3">
+              <select name="name2" id="" class="form-select" [(ngModel)]="name2">
+                <option value="" disabled selected>Pilih Person</option>
+                <option *ngFor="let user of dataListAllUser" [value]="user.user_id">{{ user.personal_name }}</option>
+              </select>
+            </div>
+            <div class="input-group mb-1">
+              <input type="text" class="form-control" placeholder="Masukkan Jabatan" [(ngModel)]="position2"
+                name="name2-position">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Penerima</label>
+            <div class="input-group mb-3">
+              <select name="name3" id="" class="form-select" [(ngModel)]="name3">
+                <option value="" disabled selected>Pilih Person</option>
+                <option *ngFor="let user of dataListAllUser" [value]="user.user_id">{{ user.personal_name }}</option>
+              </select>
+            </div>
+            <div class="input-group mb-1">
+              <input type="text" class="form-control" placeholder="Masukkan Jabatan" [(ngModel)]="position3"
+                name="name3-position">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Atasan Penerima</label>
+            <div class="input-group mb-3">
+              <select name="name4" id="" class="form-select" [(ngModel)]="name4">
+                <option value="" disabled selected>Pilih Person</option>
+                <option *ngFor="let user of dataListAllUser" [value]="user.user_id">{{ user.personal_name }}</option>
+              </select>
+            </div>
+            <div class="input-group mb-1">
+              <input type="text" class="form-control" placeholder="Masukkan Jabatan" [(ngModel)]="position4"
+                name="name4-position">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Person 5</label>
+            <div class="input-group mb-3">
+              <select name="name4" id="" class="form-select" [(ngModel)]="name5">
+                <option value="" disabled selected>Pilih Person</option>
+                <option *ngFor="let user of dataListAllUser" [value]="user.user_id">{{ user.personal_name }}</option>
+              </select>
+            </div>
+            <div class="input-group mb-1">
+              <input type="text" class="form-control" placeholder="Masukkan Jabatan" [(ngModel)]="position5"
+                name="name4-position">
+            </div>
+          </div>
+            <button type="button" class="btn btn-primary" (click)="addBA()">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateModalBA" tabindex="-1" aria-labelledby="updateModalBA" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalBALabel">Form BA</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #updateForm="ngForm">
+          <h2 class="mb-3 display-7 text-center"><strong>BA ITCM</strong></h2>
+          <div class="mb-3">
+            <label class="form-label">No. Tiket</label>
+            <input type="text" class="form-control" [(ngModel)]="form_ticket" name="form_ticket" placeholder="Masukkan Nomer Tiket">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Pilih Project</label>
+            <select name="project_uuid" id="" class="form-select" [(ngModel)]="project_uuid">
+              <option value="" disabled selected>Pilih Project</option>
+              <option *ngFor="let project of dataListAllProject" [value]="project.project_uuid">{{ project.project_name
+                }}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nama BA</label>
+            <input type="text" class="form-control" [(ngModel)]="judul" name="judul">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tanggal</label>
+            <div class="input-group mb-3">
+              <input type="date" name="tanggal" id="" class="form-control" [(ngModel)]="tanggal">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nama Aplikasi</label>
+            <input type="text" class="form-control" [(ngModel)]="nama_aplikasi" name="nama_aplikasi">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">No. DA</label>
+            <input type="text" class="form-control" [(ngModel)]="no_da" name="no_da">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">No.ITCM</label>
+            <input type="text" class="form-control" [(ngModel)]="no_itcm" name="no_itcm">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nama Orang yang Melakukan</label>
+            <input type="text" class="form-control" [(ngModel)]="dilakukan_oleh" name="dilakukan_oleh">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nama orang yang mendampingi</label>
+            <input type="text" class="form-control" [(ngModel)]="didampingi_oleh" name="didampingi_oleh">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-primary-click" (click)="updateBA()">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,120 @@
+<h1>Grup Akses</h1>
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="mb-4">Daftar Grup Akses</h3>
+    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="addRoleModal()"><i class="bi bi-plus-lg"></i>
+      Tambah Grup Akses</button>
+  </div>
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+      <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" placeholder="Search"
+        aria-describedby="button-addon2">
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Kode</th>
+            <th scope="col">Nama</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let itemRole of (roleService.dataListRole$ | async)">
+            <ng-container *ngIf="matchesSearch(itemRole)">
+              <td>{{ itemRole.role_code }}</td>
+              <td>{{ itemRole.role_title }}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" (click)="getSpecRole(itemRole.role_uuid)"><i
+                  class="bi bi-pencil-square"></i></button>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addRoleModalLabel">Tambah Role</h5>
+        <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close" ></button>
+      </div>
+      <div class="modal-body">
+        <form #roleForm="ngForm">
+          <div class="mb-3">
+            <label class="col-sm-3 col-form-label">Kode Role</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="Masukkan Kode Akses" [(ngModel)]="role_code"
+                name="role_code" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="col-sm-3 col-form-label">Nama Role</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="Masukkan Nama Akses" [(ngModel)]="role_title"
+                name="role_title" required>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="addRole()" class="btn btn-primary">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editRoleModalLabel">Edit Role</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #roleForm="ngForm">
+          <div class="mb-3">
+            <label class="col-sm-3 col-form-label">Kode Role</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="Masukkan Kode Akses" [(ngModel)]="role_code"
+                name="role_code" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="col-sm-3 col-form-label">Nama Role</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="Masukkan Nama Akses" [(ngModel)]="role_title"
+                name="role_title" required>
+            </div>
+          </div>
+          <!-- <div class="mb-3">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input custom-border" type="checkbox" id="createCheckbox" value="create">
+              <label class="form-check-label" for="createCheckbox">Create</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input custom-border" type="checkbox" id="readCheckbox" value="read">
+              <label class="form-check-label" for="readCheckbox">Read</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input custom-border" type="checkbox" id="deleteCheckbox" value="delete">
+              <label class="form-check-label" for="deleteCheckbox">Delete</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input custom-border" type="checkbox" id="updateCheckbox" value="update">
+              <label class="form-check-label" for="updateCheckbox">Update</label>
+            </div>
+          </div> -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="updateRole()" class="btn btn-primary">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>

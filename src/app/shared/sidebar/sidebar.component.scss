@@ -1,0 +1,19 @@
+.sidebar-link:hover {
+  background-color: #e23b3b;
+  border-radius: 8px;
+}
+.sidebar-item {
+  font-size: 15px; 
+  padding: 8px;
+}
+.sidebar-link {
+  &:hover {
+    background-color: #f3f4f6; /* bg-gray-100 */
+    border-radius: 8px;
+  }
+  
+  &.active {
+    background-color: #bfdbfe; /* bg-blue-100 */
+    border-radius: 8px;
+  }
+}

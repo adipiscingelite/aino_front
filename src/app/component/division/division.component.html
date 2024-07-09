@@ -1,0 +1,101 @@
+<h1><strong>Divisi</strong></h1>
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="mb-4">Daftar Divisi</h3>
+    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="addDivisionModal()"><i class="bi bi-plus-lg"></i>
+      Tambah Divisi</button>
+  </div>
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+      <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" placeholder="Search"
+        aria-describedby="button-addon2">
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Kode Divisi</th>
+            <th scope="col">Nama Divisi</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let itemDiv of (divisionService.dataListDivision$ | async)">
+            <ng-container *ngIf="matchesSearch(itemDiv)">
+              <td>{{ itemDiv.division_code }}</td>
+              <td>{{ itemDiv.division_title }}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" (click)="getSpecDiv(itemDiv.division_uuid)"><i
+                  class="bi bi-pencil-square"></i></button>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addDivisionModal" tabindex="-1" aria-labelledby="addDivisionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDivisionModalLabel">Tambah Divisi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #divisionForm="ngForm">
+          <div class="mb-3">
+            <label class="col-sm-3 col-form-label">Kode Divisi</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="Masukkan kode divisi" [(ngModel)]="division_code"
+                name="division_code" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="col-sm-3 col-form-label">Nama Divisi</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="Masukkan nama divisi" [(ngModel)]="division_title"
+                name="division_title" required>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="addDivision()" class="btn btn-primary">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editDivisionModal" tabindex="-1" aria-labelledby="editDivisionModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editDivisionModalLabel">Update Divisi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #divisionForm="ngForm">
+          <div class="mb-3">
+            <label class="col-sm-3 col-form-label">Kode Divisi</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="Masukkan kode divisi" [(ngModel)]="division_code"
+                name="division_code" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="col-sm-3 col-form-label">Nama Divisi</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" placeholder="Masukkan nama divisi" [(ngModel)]="division_title"
+                name="division_title" required>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="updateDivision()" class="btn btn-primary">Simpan</button>
+      </div>
+    </div>

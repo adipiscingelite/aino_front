@@ -1,0 +1,28 @@
+<nav class="sidebar-nav">
+  <ul id="sidebarnav" class="p-3">
+    <ng-container *ngFor="let sidebarnavItem of sidebarnavItems">
+      <li class="sidebar-item" [class.active]="showMenu === sidebarnavItem.title">
+        <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true">{{ sidebarnavItem.title }}</div>
+        <a class="sidebar-link waves-effect waves-dark" style="cursor: pointer;"
+           (click)="sidebarnavItem.dropdown ? toggleDropdown(sidebarnavItem) : toggleSubMenu(sidebarnavItem)"
+           [routerLink]="sidebarnavItem.submenu.length === 0 ? [sidebarnavItem.path] : null"
+           [ngClass]="[sidebarnavItem.class]" *ngIf="!sidebarnavItem.extralink;"
+           [routerLinkActive]="sidebarnavItem.submenu.length !== 0 ? '' : 'active'">
+          <i [ngClass]="[sidebarnavItem.icon]"></i>
+          <span class="hide-menu">{{ sidebarnavItem.title }}</span>
+          <span class="menu-arrow" *ngIf="sidebarnavItem.dropdown">&#9662;</span>
+        </a>
+
+        <ul class="nav flex-column sub-menu" *ngIf="sidebarnavItem.isDropdownOpen">
+          <ng-container *ngFor="let subItem of sidebarnavItem.submenu">
+            <li class="sidebar-item ms-4 ps-3" [class.active]="showMenu === subItem.title" *ngIf="!subItem.role_code || subItem.role_code.includes(role_code)">
+              <a class="sidebar-link waves-effect waves-dark" [routerLink]="[subItem.path]" (click)="addExpandClass(subItem.title)">
+                <span class="hide-menu">{{ subItem.title }}</span>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </li>
+    </ng-container>
+  </ul>
+</nav>

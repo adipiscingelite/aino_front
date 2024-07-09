@@ -1,0 +1,117 @@
+<h1>Otoritas</h1>
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3>Daftar Otorisasi Aplikasi</h3>
+    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="openModalAdd()"><i class="bi bi-plus-lg"></i> Tambah Otoritas</button>
+  </div>
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+      <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" placeholder="Search"
+        aria-describedby="button-addon2">
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Nama Aplikasi</th>
+            <th scope="col">Nama Role</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let itemAppRole of (appRoleService.dataListAppRole$ | async) let x = index">
+            <ng-container *ngIf="matchesSearch(itemAppRole)">
+              <td scope="row">{{ x+1 }}</td>
+              <td scope="row">{{ itemAppRole.application_title }}</td>
+              <td scope="row">{{ itemAppRole.role_title }}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" (click)="getSpecAppRole(itemAppRole.application_role_uuid)"><i
+                    class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-danger btn-sm ms-2"
+                  (click)="onDeleteAppRole(itemAppRole.application_role_uuid)"><i class="bi bi-trash"></i></button>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addAppRoleModal" tabindex="-1" aria-labelledby="addAppRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addAppRoleModalLabel">Tambah Otoritas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #appRoleForm="ngForm">
+          <div class="mb-3">
+            <div class="col-md-12">
+              <label class="col-sm-6 col-form-label">Aplikasi</label>
+              <select class="form-select" data-test="select_application" aria-label="Select Application"
+                [(ngModel)]="form.value.application_uuid" name="appUuid">
+                <option value="" disabled selected>Pilih Aplikasi</option>
+                <option *ngFor="let app of dataListApplication" [value]="app.application_uuid">{{
+                  app.application_title }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-12">
+              <label class="col-sm-6 col-form-label">Role</label>
+              <select class="form-select" aria-label="Select Role" data-test="select_role"
+                [(ngModel)]="form.value.role_uuid" name="roleUuid">
+                <option value="" disabled selected>Pilih Role</option>
+                <option *ngFor="let role of dataListRole" [value]="role.role_uuid">{{ role.role_title }}</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="addAppRole()" class="btn btn-primary">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editAppRoleModal" tabindex="-1" aria-labelledby="editAppRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editAppRoleModalLabel">Edit Otoritas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #appRoleForm="ngForm">
+          <div class="row">
+            <div class="col-md-6">
+              <label class="col-sm-3 col-form-label">Aplikasi</label>
+                <select class="form-select" data-test="select_application" aria-label="Select Application"
+                  [(ngModel)]="form.value.application_uuid" name="appUuid">
+                  <option value="" disabled selected>Pilih Aplikasi</option>
+                  <option *ngFor="let app of dataListApplication" [value]="app.application_uuid">{{
+                    app.application_title }}
+                  </option>
+                </select>
+            </div>
+            <div class="col-md-6">
+              <label class="col-sm-3 col-form-label">Role</label>
+                <select class="form-select" aria-label="Select Role" data-test="select_role"
+                  [(ngModel)]="form.value.role_uuid" name="roleUuid">
+                  <option value="" disabled selected>Pilih Role</option>
+                  <option *ngFor="let role of dataListRole" [value]="role.role_uuid">{{ role.role_title }}</option>
+                </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="updateAppRole()" class="btn btn-primary">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>

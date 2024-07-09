@@ -1,0 +1,247 @@
+<h1>User Control</h1>
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3>Daftar User</h3>
+    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="openModalAdd()"><i class="bi bi-plus-lg"></i> Tambah 
+      User</button>
+  </div>
+  <div class="card-body"> 
+    <div class="input-group mb-3">  
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+      <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" placeholder="Search"
+        aria-describedby="button-addon2">
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nama</th>
+          <th scope="col">Email</th>
+          <th scope="col">Divisi</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of (userService.dataListUser$ | async)">
+          <ng-container *ngIf="matchesSearch(user)">
+            <td>{{ user.user_name }}</td>
+            <td>{{ user.user_email }}</td>
+            <td>{{ user.division_title }}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" (click)="getSpecUser(user.user_application_role_uuid)"><i
+                class="bi bi-pencil-square"></i></button>
+              <button class="btn btn-danger btn-sm ms-2" (click)="onDeleteUser(user.user_application_role_uuid)"><i
+                  class="bi bi-trash"></i></button>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add User Modal -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserModalLabel"><strong>Tambah User</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #userForm="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">User Name</label>
+                  <input type="text" name="user_name" [(ngModel)]="user_name" required class="form-control"
+                    placeholder="Enter your user name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Nama</label>
+                  <input type="text" name="first_name" [(ngModel)]="personal_name" required class="form-control"
+                    placeholder="Enter your full name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input type="email" name="user_email" [(ngModel)]="user_email" required class="form-control"
+                    placeholder="example@ainosi.co.id">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Password</label>
+                  <div class="input-group">
+                    <input type="{{ showPassword ? 'text' : 'password' }}" name="user_password"
+                      [(ngModel)]="user_password" required class="form-control"
+                      placeholder="Enter a secure password (8 characters minimum)">
+                    <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm6 form-label">Tanggal Lahir</label>
+                <div class="input-group">
+                  <input type="date" name="user_birthday_add" [(ngModel)]="personal_birthday" class="form-control" [max]="maxBirthdayDate">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm-6 form-label">Gender</label>
+                <select class="form-select" data-test="select_gender" aria-label="Select Gender"
+                  [(ngModel)]="personal_gender" name="personal_gender">
+                  <option value="" disabled selected>Pilih Gender</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm-3 form-label">No. HP</label>
+                <input type="text" name="personal_phone_add" [(ngModel)]="personal_phone" class="form-control"
+                  placeholder="Enter your phone number">
+              </div>
+
+
+              <div class="col-md-6">
+                <label class="col-sm-3 form-label">Alamat</label>
+                <input type="text" name="personal_address_add" [(ngModel)]="personal_address" class="form-control"
+                  placeholder="Enter your address">
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm-5 form-label">Aplikasi</label>
+                 <select class="form-select" data-test="select_application" aria-label="Select Application" name="application_uuid" [(ngModel)]="application_uuid" (change)="onApplicationChange()">
+                  <option value="" disabled selected>Pilih Aplikasi</option>
+                  <option *ngFor="let app of dataListApplication" [value]="app.application_uuid">{{ app.application_title }}</option>
+                </select>
+                <p>{{ application_uuid }}</p>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-6 form-label">Role</label>
+                <select class="form-select" aria-label="Select Role" data-test="select_role"
+                  [(ngModel)]="form.value.role_uuid" name="roleUuid">
+                  <option value="" disabled selected>Pilih Role</option>
+                  <option *ngFor="let role of dataListRole" [value]="role.role_uuid">{{ role.role_title }}</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 form-label">Divisi</label>
+                <select class="form-select" aria-label="Select Division" data-test="select_division"
+                  [(ngModel)]="form.value.division_uuid" name="division_uuid">
+                  <option value="" disabled selected>Pilih Divisi</option>
+                  <option *ngFor="let division of dataListDivision" [value]="division.division_uuid">{{
+                    division.division_title }}</option>
+                </select>
+              </div>
+            </div>
+          </form> 
+        </div>
+        <div class="modal-footer">  
+          <button type="button" (click)="addUser()" class="btn btn-primary">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserModalLabel"><strong>Edit User</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #editUserForm="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Username</label>
+                  <input type="text" name="edit_user_name" [(ngModel)]="user_name" class="form-control"
+                    placeholder="Enter your username">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Nama</label>
+                  <input type="text" name="personal_name" [(ngModel)]="personal_name" required class="form-control"
+                    placeholder="Enter your full name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">User Email</label>
+                  <input type="email" name="user_email" [(ngModel)]="user_email" required class="form-control"
+                    placeholder="example@ainosi.co.id">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm-3 form-label">Birthday</label>
+                <div class="input-group">
+                  <input type="date" name="user_birthday_update" [(ngModel)]="personal_birthday" class="form-control">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm-3 form-label">Gender</label>
+                <select class="form-select" data-test="select_gender" aria-label="Select Gender"
+                  [(ngModel)]="personal_gender" name="personal_gender">
+                  <option value="" disabled selected>Select Gender</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm-3 form-label">Phone</label>
+                <input type="text" name="personal_phone_update" [(ngModel)]="personal_phone" class="form-control"
+                  placeholder="Enter your phone number">
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm-3 form-label">Address</label>
+                <input type="text" name="personal_address" [(ngModel)]="personal_address" class="form-control"
+                  placeholder="Enter your address">
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm-5 form-label">Aplikasi</label>
+                 <select class="form-select" data-test="select_application" aria-label="Select Application" name="application_uuid" [(ngModel)]="application_uuid" (change)="onApplicationChange()">
+                  <option value="" disabled selected>Pilih Aplikasi</option>
+                  <option *ngFor="let app of dataListApplication" [value]="app.application_uuid">{{ app.application_title }}</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-6 form-label">Role</label>
+                <select class="form-select" aria-label="Select Role" data-test="select_role"
+                  [(ngModel)]="form.value.role_uuid" name="roleUuid">
+                  <option value="" disabled selected>Pilih Role</option>
+                  <option *ngFor="let role of dataListRole" [value]="role.role_uuid">{{ role.role_title }}</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-6 form-label">Divisi</label>
+                <select class="form-select" aria-label="Select Division" data-test="select_division"
+                  [(ngModel)]="form.value.division_uuid" name="division_uuid">
+                  <option value="" disabled selected>Pilih Divisi</option>
+                  <option *ngFor="let division of dataListDivision" [value]="division.division_uuid">{{
+                    division.division_title }}</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="updateUser()" class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>

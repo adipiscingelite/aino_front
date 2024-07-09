@@ -1,0 +1,122 @@
+<h1 class="display-5">PROJECT</h1>
+<div class="card" style="background-color: #f8f9fa;">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="card-title">Daftar Project</h3>
+    <div>
+      <button class="btn btn-sm btn-outline-primary" (click)="addProjectModal()" *ngIf="role_code === 'SA'"><i class="bi bi-plus"></i> Tambah
+        Project</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" placeholder="Search Project"
+        aria-label="Search Project" aria-describedby="button-addon2">   
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Kode Project</th>
+            <th scope="col">Nama Project</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Nama Produk</th>
+            <th scope="col" *ngIf="role_code === 'SA'">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let itemProject of (projectService.dataListProject$ | async) let x = index">
+            <ng-container *ngIf="matchesSearch(itemProject)">
+              <td>{{ x + 1 }}</td>
+              <td>{{ itemProject.project_code }}</td>
+              <td>{{ itemProject.project_name }}</td>
+              <td>{{ itemProject.project_manager }}</td>
+              <td>{{ itemProject.product_name }}</td>
+              <td>
+                <button class="btn btn-warning" (click)="getSpecificProject(itemProject.project_uuid)" *ngIf="role_code === 'SA'"><i class="bi bi-pencil-square"></i></button>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Add Project Modal -->
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProjectModal">Add Project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #formProjectAdd="ngForm">
+          <div class="mb-3">
+            <label for="projectName" class="form-label">Nama Project</label>
+            <input type="text" class="form-control" id="projectName" placeholder="Masukkan kode Project"
+              [(ngModel)]="project_name" name="project_name" required>
+          </div>
+          <div>
+            <label for="projectCode" class="form-label">Kode Project</label> 
+            <input type="text" class="form-control" id="projectCode" placeholder="Masukkan kode Project"
+              [(ngModel)]="project_code" name="project_code" required>
+          </div>
+          <div class="mb-3">
+            <label for="projectManager" class="form-label">Manager Project</label>
+            <input type="text" class="form-control" id="projectManager" placeholder="Masukkan nama Manager"
+              [(ngModel)]="project_manager" name="project_manager" required>
+          </div>
+          <div class="mb-3">
+            <label for="productName" class="form-label">Pilih Produk</label>
+            <select class="form-select" id="productName" [(ngModel)]="product_uuid" name="product_uuid" required>
+              <option value="" disabled>Pilih Produk</option>
+              <option *ngFor="let itemProduct of dataListProduct" [value]="itemProduct.product_uuid">{{itemProduct.product_name}}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" (click)="addProject()">Simpan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Project Modal -->
+<div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editProjectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editProjectModalLabel">Edit Project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #formProject="ngForm">
+          <div class="mb-3">
+            <label for="projectName" class="form-label">Nama Project</label>
+            <input type="text" class="form-control" id="projectName" placeholder="Masukkan nama Project"
+              [(ngModel)]="project_name" name="project_name" required>
+          </div>
+          <div>
+            <label for="projectCode" class="form-label">Kode Project</label>
+            <input type="text" class="form-control" id="projectCode" placeholder="Masukkan kode Project"
+              [(ngModel)]="project_code" name="project_code" required>
+          </div>
+          <div class="mb-3">
+            <label for="projectManager" class="form-label">Manager Project</label>
+            <input type="text" class="form-control" id="projectManager" placeholder="Masukkan nama Manager"
+              [(ngModel)]="project_manager" name="project_manager" required>
+          </div>
+          <div class="mb-3">
+            <label for="productName" class="form-label">Pilih Produk</label>
+            <select class="form-select" id="productName" [(ngModel)]="product_uuid" name="product_uuid" required>
+              <option value="" disabled>Pilih Produk</option>
+              <option *ngFor="let itemProduct of dataListProduct" [value]="itemProduct.product_uuid">{{itemProduct.product_name}}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" (click)="updateProject()">Simpan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

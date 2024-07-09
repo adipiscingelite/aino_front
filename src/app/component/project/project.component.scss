@@ -1,0 +1,113 @@
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  overflow: hidden;
+
+  .card-header {
+    background-color: #6c757d;
+    border-bottom: 1px solid #000000;
+    padding: 15px 20px;
+
+    .card-title {
+      color: #ffff;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    .btn {
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      transition: background-color 0.3s;
+    
+      &.btn-outline-primary {
+        background-color: transparent;
+        border: 1px solid #ffffff;
+        color: #ffffff;
+    
+        &:hover {
+          background-color: #ffffff; 
+          color: #000000;
+        }
+      }
+    }
+  }    
+  .card-body {
+    padding: 20px;
+
+    .form-control {
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 8px 12px;
+      width: 100%;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 0;
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+      }
+
+      tbody tr {
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #f1f1f1;
+        }
+      }
+    }
+
+    .btn {
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      transition: background-color 0.3s;
+
+      &.btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+
+        &:hover {
+          background-color: #e0a800;
+        }
+      }
+
+      &.btn-danger {
+        background-color: #dc3545;
+        color: #ffffff;
+
+        &:hover {
+          background-color: #c82333;
+        }
+      }
+
+      &.btn-outline-secondary {
+        background-color: transparent;
+        border: 1px solid #6c757d;
+        color: #6c757d;
+        transition: background-color 0.3s, color 0.3s;
+
+        &:hover {
+          background-color: #6c757d;
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+<h1 class="display-5">PRODUCT</h1>
+<div class="card" style="background-color: #f8f9fa;">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="card-title">Daftar Project</h3>
+    <div>
+      <button class="btn btn-sm btn-outline-primary" (click)="addProductModal()" *ngIf="role_code === 'SA'"><i class="bi bi-plus"></i> Tambah
+        Produk</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" placeholder="Search Product"
+        aria-label="Search Product" aria-describedby="button-addon2">
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Nama Produk</th>
+            <th scope="col">Owner</th>
+            <th scope="col" *ngIf="role_code === 'SA'">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let itemProduct of (productService.dataListProduct$ | async) let x = index">
+            <ng-container *ngIf="matchesSearch(itemProduct)">
+              <td>{{ x + 1 }}</td>
+              <td>{{ itemProduct.product_name }}</td>
+              <td>{{ itemProduct.product_owner }}</td>
+              <td>
+                <button class="btn btn-warning" (click)="getSpecificProduct(itemProduct.product_uuid)" *ngIf="role_code === 'SA'"><i class="bi bi-pencil-square"></i></button>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProductModal">Tambah Produk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #formProduct="ngForm">
+          <div class="mb-3">
+            <label for="productName" class="form-label">Nama Produk</label>
+            <input type="text" class="form-control" id="productName" placeholder="Masukkan kode Produk"
+              [(ngModel)]="product_name" name="product_name" required>
+          </div>
+          <div class="mb-3">
+            <label for="productOwner" class="form-label">Nama Owner</label>
+            <input type="text" class="form-control" id="productOwner" placeholder="Masukkan nama Owner"
+              [(ngModel)]="product_owner" name="product_owner" required>
+          </div>
+          <button type="submit" class="btn btn-primary" (click)="addProduct()">Simpan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Product modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editProductModal">Edit Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #formProductEdit="ngForm">
+          <div class="mb-3">
+            <label for="productName" class="form-label">Nama Produk</label>
+            <input type="text" class="form-control" id="productName" placeholder="Masukkan nama Produk"
+              [(ngModel)]="product_name" name="product_name" required>
+          </div>
+          <div class="mb-3">
+            <label for="ownerName" class="form-label">Nama Owner</label>
+            <input type="text" class="form-control" id="ownerName" placeholder="Masukkan nama owner"
+              [(ngModel)]="product_owner" name="product_owner" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateProduct()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
