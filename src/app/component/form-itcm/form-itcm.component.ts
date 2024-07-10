@@ -235,19 +235,16 @@ export class FormITCMComponent implements OnInit {
   }
 
   fetchDocumentUUID(): void {
-    axios.get(`${environment.apiUrl2}/document`)
+    axios.get(`${environment.apiUrl2}/form/itcm/code`)
       .then(response => {
-        if (response.data.length > 0) {
-          this.document_uuid = response.data[0].document_uuid;
-          console.log('Document UUID:', this.document_uuid);
-        } else {
-          console.error('No document UUID found in response.');
-        }
+        this.document_uuid = response.data.document_uuid;
+        console.log('Document UUID:', this.document_uuid);
       })
       .catch(error => {
         console.error('Error fetching document UUID:', error);
       });
   }
+  
 
   openModalAddFormITCM() {
     $('#addModalFormITCM').modal('show');
@@ -283,6 +280,7 @@ export class FormITCMComponent implements OnInit {
       });
   }
 
+  
 
   addFormITCM() {
     axios.post(`${environment.apiUrl2}/api/add/itcm`, {

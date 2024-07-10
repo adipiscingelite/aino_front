@@ -71,7 +71,7 @@ export class FormBAComponent implements OnInit {
   deleted_at: string = '';
   deleted_by: string = '';
   
-  document_uuid: string = '48748d46-77ed-4115-994a-c7287bfca6f0';
+  document_uuid: string = '';
   document_name: string = '';
   form_ticket: string = '';
   project_uuid: string = '';
@@ -129,6 +129,7 @@ export class FormBAComponent implements OnInit {
     this.fetchAllDataBA();
     this.fetchDataAdminBA();
     this.FetchDataUserBA();
+    this.fetchDocumentUUID();
   }
 
   dataListAllUser: Users[] = [];
@@ -248,6 +249,18 @@ export class FormBAComponent implements OnInit {
         }
       })
   }
+
+  fetchDocumentUUID(): void {
+    axios.get(`${environment.apiUrl2}/form/ba/code`)
+      .then(response => {
+        this.document_uuid = response.data.document_uuid;
+        console.log('Document UUID:', this.document_uuid);
+      })
+      .catch(error => {
+        console.error('Error fetching document UUID:', error);
+      });
+  }
+  
 
   openModalAddBA() {
     $('#addModalBA').modal('show');
