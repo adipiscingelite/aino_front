@@ -47,7 +47,6 @@ export class AddUserComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log("running");
     this.form = this.fb.group({
       user_name: [''],
       user_email: [''],

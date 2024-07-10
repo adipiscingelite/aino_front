@@ -93,7 +93,6 @@ export class FormDAComponent implements OnInit {
   form_ticket: string = '';
   form_status: string = '';
   document_uuid: string = '';
-  // 58aeedc2-5df1-4c9c-b69e-0b6d3a2cf0ef
   document_name: string = '';
   project_uuid: string = '';
   project_name: string = '';
@@ -177,6 +176,7 @@ export class FormDAComponent implements OnInit {
     this.fetchDataFormDA();
     this.fetchDataAdminFormDA();
     this.fetchDataUserFormDA();
+    this.fetchDocumentUUID();
 
     let auxDate = this.substractYearsToDate(new Date(), 0);
     this.maxDate = this.getDateFormateForSearch(auxDate);
@@ -327,13 +327,26 @@ export class FormDAComponent implements OnInit {
       });
   }
 
+  fetchDocumentUUID(): void {
+    axios.get(`${environment.apiUrl2}/form/da/code`)
+      .then(response => {
+        this.document_uuid = response.data.document_uuid;
+        console.log('Document UUID:', this.document_uuid);
+      })
+      .catch(error => {
+        console.error('Error fetching document UUID:', error);
+      });
+  }
+  
+  
   openModalAddFormDA() {
     $('#addModalFormDA').modal('show');
   }
 
   addFormDA(): void {
     const token = this.cookieService.get('userToken');
-
+    console.log('Document UUID:', this.document_uuid);
+    
     const requestDataFormDA = {
       isPublished: false,
       formData: {
@@ -379,6 +392,7 @@ export class FormDAComponent implements OnInit {
       ],
     }
 
+    console.log(this.document_uuid);
     axios.post(`${environment.apiUrl2}/api/add/da`, requestDataFormDA,
       {
         headers: {

@@ -30,7 +30,7 @@ interface formsITCM {
   tanggal: string;
   perubahan_aset: string;
   deskripsi: string;
-}
+} 
 
 interface Documents {
   document_uuid: string;
@@ -59,7 +59,8 @@ export class FormITCMComponent implements OnInit {
   dataListAllDoc: Documents[] = [];
   dataListAllProject: Projects[] = [];
 
-  document_uuid: string = '768e9241-c9ca-411f-8b91-4fb3ca7728bf';
+  document_uuid: string = '';
+  //768e9241-c9ca-411f-8b91-4fb3ca7728bf
   document_name: string = '';
   form_ticket: string = '';
   form_ticket_update: string = '';
@@ -139,6 +140,7 @@ export class FormITCMComponent implements OnInit {
     this.fetchAllUser();
     this.fetchAllDocument();
     this.fetchAllProject();
+    this.fetchDocumentUUID();
   }
 
   dataListDocument: Documents[] = [];
@@ -229,6 +231,21 @@ export class FormITCMComponent implements OnInit {
       })
       .catch(error => {
         console.log(error.response)
+      });
+  }
+
+  fetchDocumentUUID(): void {
+    axios.get(`${environment.apiUrl2}/document`)
+      .then(response => {
+        if (response.data.length > 0) {
+          this.document_uuid = response.data[0].document_uuid;
+          console.log('Document UUID:', this.document_uuid);
+        } else {
+          console.error('No document UUID found in response.');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching document UUID:', error);
       });
   }
 

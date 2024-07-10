@@ -71,13 +71,12 @@ export class FormBAComponent implements OnInit {
   deleted_at: string = '';
   deleted_by: string = '';
   
-  document_uuid: string = '';
-  //48748d46-77ed-4115-994a-c7287bfca6f0
+  document_uuid: string = '48748d46-77ed-4115-994a-c7287bfca6f0';
   document_name: string = '';
   form_ticket: string = '';
   project_uuid: string = '';
   project_name: string = '';
-
+ 
   judul: string = '';
   tanggal: string = '';
   nama_aplikasi: string = '';

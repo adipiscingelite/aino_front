@@ -11,8 +11,8 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent {
   loginData = {
-    user_email: 'nathan@gmail.com',
-    user_password: '87654321',
+    user_email: '',
+    user_password: '',
   };
   showPassword: boolean = false;
   //* ini fungsinya untuk tampilan login di awal
