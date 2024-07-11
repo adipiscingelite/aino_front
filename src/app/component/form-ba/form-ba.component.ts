@@ -128,6 +128,7 @@ export class FormBAComponent implements OnInit {
 
     this.fetchAllDataBA();
     this.fetchDataAdminBA();
+    
     this.FetchDataUserBA();
     this.fetchDocumentUUID();
   }
@@ -203,11 +204,11 @@ export class FormBAComponent implements OnInit {
   fetchAllDataBA(): void {
     axios.get(`${environment.apiUrl2}/form/ba`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         this.dataListAllBA = response.data;
       })
       .catch((error) => {
-        console.log(error.response);
+        // console.log(error.response);
         if (error.response.status === 500) {
           console.log(error.response.data.message);
         }

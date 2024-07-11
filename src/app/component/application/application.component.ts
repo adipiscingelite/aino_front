@@ -34,6 +34,7 @@ export class ApplicationComponent implements OnInit {
   application_code: string = '';
   application_title: string = '';
   application_description: string = '';
+  role_code: any;
   
   constructor(
     private cookieService: CookieService,
@@ -49,6 +50,7 @@ export class ApplicationComponent implements OnInit {
   
 
   ngOnInit(): void {
+    this.fetchProfileData()
     this.fetchDataApplication()
   }
 
@@ -59,6 +61,23 @@ export class ApplicationComponent implements OnInit {
       item.application_title.toLowerCase().includes(searchLowerCase) ||
       item.application_description.toLowerCase().includes(searchLowerCase)
     );
+  }
+
+  fetchProfileData(): void {
+    const token = this.cookieService.get('userToken');
+
+    axios.get(`${this.apiUrl}/auth/my/profile`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((response) => {
+        this.role_code = response.data.role_code;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   fetchDataApplication(): void {
@@ -74,7 +93,6 @@ export class ApplicationComponent implements OnInit {
     })
   }
   
-
   OpenAddApplicationModal() {
     $('#addApplicationModal').modal('show');
     this.application_code = '';

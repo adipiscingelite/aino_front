@@ -38,7 +38,6 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.fetchProfileData();
     console.log('ngOnInit executed');
-    // this.mockProfileData();
   }
   fetchProfileData() {
     const token = this.cookieService.get('userToken');
@@ -52,10 +51,6 @@ export class SidebarComponent implements OnInit {
       })
       .then((response) => {
         console.log(response.data);
-        this.user_uuid = response.data.user_uuid;
-        this.user_name = response.data.user_name;
-        this.role_code = response.data.role_code;
-
         this.sidebarnavItems = ROUTES.filter(
           (sidebarnavItem) =>
             sidebarnavItem &&

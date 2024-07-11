@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 export class LoginComponent {
   loginData = {
     user_email: '',
-    user_password: '',
+    user_password: '12345678',
   };
   showPassword: boolean = false;
   //* ini fungsinya untuk tampilan login di awal

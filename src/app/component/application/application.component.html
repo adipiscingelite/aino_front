@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h3 class="mb-4">Daftar Aplikasi</h3>
-    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="OpenAddApplicationModal()"><i
+    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="OpenAddApplicationModal()" *ngIf="role_code === 'SA'"><i
         class="bi bi-plus-lg"></i> Tambah
       Aplikasi</button>
   </div>
@@ -19,7 +19,7 @@
             <th scope="col">Kode App.</th>
             <th scope="col">Judul</th>
             <th scope="col">Deskripsi</th>
-            <th scope="col">Action</th>
+            <th scope="col" *ngIf="role_code === 'SA'">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
               <td>{{ itemApp.application_title }}</td>
               <td>{{ itemApp.application_description }}</td>
               <td>
-                <button class="btn btn-warning btn-sm" (click)="getSpecApp(itemApp.application_uuid)"><i
+                <button class="btn btn-warning btn-sm" (click)="getSpecApp(itemApp.application_uuid)" *ngIf="role_code === 'SA'"><i
                   class="bi bi-pencil-square"></i></button>
               </td>
             </ng-container>

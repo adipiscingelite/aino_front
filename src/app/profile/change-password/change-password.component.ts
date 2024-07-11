@@ -45,6 +45,9 @@ export class ChangePasswordComponent {
         text: response.data.message,
         icon: 'success'
       });
+      // alert('Password berhasil diubah. Silakan login kembali.');
+      this.cookieService.delete('userToken');
+      this.router.navigate(['/login']);
     })
     .catch((error) => {
       if(error.response.status === 400) {
@@ -81,7 +84,7 @@ export class ChangePasswordComponent {
   }
   
 
-  onCancel() {
-    this.router.navigateByUrl('/main/dashboard');
-  }
+  // onCancel() {
+  //   this.router.navigateByUrl('/main/dashboard');
+  // }
 }
