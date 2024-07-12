@@ -2,7 +2,7 @@
     <div class="col-md-6 col-lg-3" *ngFor='let topcard of topcards'>
         <div class="card">
             <div class="card-body">
-                <a href="{{ topcard.href }}">
+                <a [routerLink]="topcard.href">
                     <div class="d-flex align-items-center">
                         <div
                             class="btn btn-lg rounded-circle round round-lg fs-6 d-flex align-items-center justify-content-center bg-light-{{topcard.bgcolor}} text-{{topcard.bgcolor}}">

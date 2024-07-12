@@ -3,14 +3,23 @@
     <div class="col-md-4">
       <div class="card">
         <div class="card-body text-center">
-          <img src="assets/images/users/user5.jpg" alt="Profile Picture" class="img-fluid rounded-circle mb-3">
+          <div class="position-relative text-center">
+            <img src="assets/images/users/user5.jpg" alt="Profile Picture" class="img-fluid rounded-circle mb-3">
+            <div class="p-1  p- rounded-circle position-absolute bottom-0 start-50" style="background-color:#f4f6f9;transform: translateX(-50%);">
+              <svg width="41" height="41" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m16.432 6.97-1.248-1.972c-.263-.307-.624-.498-1.028-.498H9.844c-.404 0-.765.191-1.028.498L7.568 6.969c-.263.307-.601.531-1.005.531H3.75A1.5 1.5 0 0 0 2.25 9v9a1.5 1.5 0 0 0 1.5 1.5h16.5a1.5 1.5 0 0 0 1.5-1.5V9a1.5 1.5 0 0 0-1.5-1.5h-2.766c-.405 0-.79-.224-1.052-.53Z"></path>
+                <path d="M12 16.5A3.75 3.75 0 1 0 12 9a3.75 3.75 0 0 0 0 7.5Z"></path>
+                <path d="M5.813 7.406V6.375H4.688v1.031"></path>
+               </svg>
+            </div>
+          </div>
           <h4 class="card-title">{{ user.personal_name }}</h4>
           <p class="card-text">{{ user.role_title }}</p>
         </div>
       </div>
     </div>
     <div class="col-md-8">
-      
+
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">About Me</h5>
@@ -22,7 +31,7 @@
           </p>
         </div>
       </div>
-      
+
       <div class="container mt-1">
         <div class="bg-white border border-gray-100 rounded-sm p-3">
           <h2>Personal Information</h2>
@@ -46,7 +55,7 @@
           <a routerLink="/main/profile/change-password" routerLinkActive="active">Change Password</a>
         </div>
       </div>
-      
+
     </div>
   </div>
 </div>

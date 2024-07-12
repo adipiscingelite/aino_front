@@ -3,7 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
 import { LoginComponent } from './login/login.component';
-  
+
+import { PagenotfoundComponent } from  
+    './pagenotfound/pagenotfound.component'; 
 import { AuthGuard } from './auth/auth.guard';
 
 export const Approutes: Routes = [
@@ -39,8 +41,6 @@ export const Approutes: Routes = [
       },
     ]
   },
-  {
-    path: '**',
-    redirectTo: '/starter'
-  }
+  { path: '**', pathMatch: 'full',  
+    component: PagenotfoundComponent }, 
 ];
