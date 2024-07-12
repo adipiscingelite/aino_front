@@ -1,7 +1,7 @@
-<h1 class="display-5">PRODUCT</h1>
-<div class="card" style="background-color: #f8f9fa;">
+<h1>PRODUCT</h1>
+<div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <h3 class="card-title">Daftar Project</h3>
+    <h3 class="mb-4">Daftar Project</h3>
     <div>
       <button class="btn btn-sm btn-outline-primary" (click)="addProductModal()" *ngIf="role_code === 'SA'"><i class="bi bi-plus"></i> Tambah
         Produk</button>
@@ -9,6 +9,7 @@
   </div>
   <div class="card-body">
     <div class="input-group mb-3">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
       <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" placeholder="Search Product"
         aria-label="Search Product" aria-describedby="button-addon2">
     </div>

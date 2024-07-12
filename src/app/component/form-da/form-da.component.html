@@ -1,7 +1,7 @@
-<h1 class="display-5">Formulir Dampak Analisa TI</h1>
-<div class="card" style="background-color: #f8f9fa;">
+<h1>Formulir Dampak Analisa TI</h1>
+<div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <h3 class="card-title">Daftar Formulir</h3>
+    <h3 class="mb-4">Daftar Formulir</h3>
     <div>
       <button class="btn btn-sm btn-outline-primary" (click)="openModalAddFormDA()"><i class="bi bi-plus"></i> Tambah
         Formulir</button>
@@ -9,6 +9,7 @@
   </div>
   <div class="card-body">
     <div class="input-group mb-3">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
       <input type="text" class="form-control" name="searchText" placeholder="Search Dokumen" aria-label="Search Dokumen"
         aria-describedby="button-addon2">
     </div>
@@ -56,10 +57,10 @@
                 <td>{{ itemFormDA.jenis_perubahan }}</td>
                 <td>
                   <button class="btn btn-warning" (click)="getSpecificFormDA(itemFormDA.form_uuid)"><i
-                      class="bi bi-pencil-square"></i></button>
+                    class="bi bi-pencil-square"></i></button>
                   <button class="btn btn-secondary" (click)="getSpecificFormDADetail(itemFormDA.form_uuid)"><i class="bi bi-clipboard2-check"></i></button>
                   <button class="btn btn-danger" (click)="onDeleteFormDA(itemFormDA.form_uuid)"><i
-                      class="bi bi-trash"></i></button>
+                    class="bi bi-trash text-bl"></i></button>                  
                 </td>
               </ng-container>
             </tr>

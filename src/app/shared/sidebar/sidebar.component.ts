@@ -41,29 +41,31 @@ export class SidebarComponent implements OnInit {
   }
   fetchProfileData() {
     const token = this.cookieService.get('userToken');
-    console.log('Token:', token);
+    console.log('Token :', token);
+    
+    axios.get(`${this.apiUrl}/auth/my/profile`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then((response) => {
+      console.log(response.data)
+      this.user_uuid = response.data.user_uuid;
+      this.user_name = response.data.user_name;
+      this.role_code = response.data.role_code;
 
-    axios
-      .get(`${this.apiUrl}/auth/my/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        this.sidebarnavItems = ROUTES.filter(
-          (sidebarnavItem) =>
-            sidebarnavItem &&
-            (!sidebarnavItem.role_code ||
-              sidebarnavItem.role_code.includes(this.role_code))
-        );
-        console.log('Filtered Sidebar Items:', this.sidebarnavItems);
-      })
-      .catch((error) => {
-        if (error.response.status === 500) {
-          console.log(error.response.data.message);
-        }
-      });
+      this.sidebarnavItems = ROUTES.filter(sidebarnavItem =>
+        sidebarnavItem &&
+        (!sidebarnavItem.role_code || sidebarnavItem.role_code.includes(this.role_code))
+      );
+  
+    })
+    .catch((error) => {
+      if (error.response.status === 500) {
+        console.log(error.response.data.message)
+      }
+    })
   }
 
   // mockProfileData() {
@@ -79,7 +81,6 @@ export class SidebarComponent implements OnInit {
   //   console.log('Filtered Sidebar Items with Mock Data:', this.sidebarnavItems);
   // }
 
-  
   // this is for the open close
   addExpandClass(element: string): void {
     if (element === this.showMenu) {

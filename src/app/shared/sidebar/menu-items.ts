@@ -130,5 +130,3 @@ export const ROUTES: RouteInfo[] = [
     ],
   },
 ];
-
-console.log('ROUTES:', ROUTES);

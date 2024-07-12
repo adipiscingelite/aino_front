@@ -1,4 +1,4 @@
-$primary-color: #0092fa;
+$danger-color: #dc3545;
 $secondary-color: #2c3e50;
 $third-color: #f7e40f;
 $shadow-color: rgba(0, 0, 0, 0.2);
@@ -39,16 +39,16 @@ h1 {
   border-radius: 8px;
 }
 
-.btn-primary {
-  background-color: $primary-color;
+.btn-danger {
+  background-color: $danger-color;
   border: none;
   border-radius: 8px;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
 }
 
-.btn-primary:hover {
-  background-color: darken($primary-color, 10%);
+.btn-danger:hover {
+  background-color: darken($danger-color, 10%);
 }
 
 .btn-warning {
