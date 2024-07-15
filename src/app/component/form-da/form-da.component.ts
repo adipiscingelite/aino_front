@@ -508,57 +508,54 @@ export class FormDAComponent implements OnInit {
     axios.get(`${environment.apiUrl2}/da/${form_uuid}`)
       .then((response) => {
         $('#detailModalDA').modal('show');
-        console.log(response.data);
-        const formData = response.data;
-        this.dataListFormDADetail = response.data;
-        // this.form_uuid = formData.form_uuid;
-        // this.form_number = formData.form_number;
-        // this.form_ticket = formData.form_ticket;
-        // this.form_status = formData.form_status;
-        // this.document_name = formData.document_name;
-        // this.project_name = formData.project_name;
-        // this.nama_analis = formData.nama_analis;
-        // this.jabatan = formData.jabatan;
-        // this.departemen = formData.departemen;
-        // this.jenis_perubahan = formData.jenis_perubahan;
-        // this.detail_dampak_perubahan = formData.detail_dampak_perubahan;
-        // this.rencana_pengembangan_perubahan = formData.rencana_pengembangan_perubahan;
-        // this.rencana_pengujian_perubahan_sistem = formData.rencana_pengujian_perubahan_sistem;
-        // this.rencana_rilis_perubahan_dan_implementasi = formData.rencana_rilis_perubahan_dan_implementasi;
-        // this.name = formData.name1;
-        // this.position = formData.position1;
-        // this.role_sign = formData.role_sign1;
-        // this.is_sign = formData.is_sign1;
-        // this.name = formData.name2;
-        // this.position = formData.position2;
-        // this.role_sign = formData.role_sign2;
-        // this.is_sign = formData.is_sign2;
-        // this.name = formData.name3;
-        // this.position = formData.position3;
-        // this.role_sign = formData.role_sign3;
-        // this.is_sign = formData.is_sign3;
-        // this.name = formData.name4;
-        // this.position = formData.position4;
-        // this.role_sign = formData.role_sign4;
-        // this.is_sign = formData.is_sign4;
-        // this.name = formData.name5;
-        // this.position = formData.position5;
-        // this.role_sign = formData.role_sign5;
-        // this.is_sign = formData.is_sign5;
+        console.log(response);
+        const formData = response.data.form;
+        this.form_ticket = formData.form_ticket;
+        this.form_status = formData.form_status;
+        this.form_number = formData.form_number;
+        this.document_name = formData.document_name;
+        this.project_name = formData.project_name;
+        this.approval_status = formData.approval_status;
+        this.reason = formData.reason?.String || '';
+        this.nama_analis = formData.nama_analis;
+        this.jabatan = formData.jabatan;
+        this.departemen = formData.departemen;
+        this.jenis_perubahan = formData.jenis_perubahan;
+        this.detail_dampak_perubahan = formData.detail_dampak_perubahan;
+        this.rencana_pengembangan_perubahan = formData.rencana_pengembangan_perubahan;
+        this.rencana_pengujian_perubahan_sistem = formData.rencana_pengujian_perubahan_sistem;
+        this.rencana_rilis_perubahan_dan_implementasi = formData.rencana_rilis_perubahan_dan_implementasi;
+
+        if (response.data.signatories !== null) {
+          const signatories = response.data.signatories;
+          this.name1 = signatories.name1 || '';
+          this.position1 = signatories.position1 || '';
+          this.name2 = signatories.name2 || '';
+          this.position2 = signatories.position2 || '';
+        } else {
+          this.name1 = "jawa";
+          this.position1 = "intern";
+          this.name2 = "budi";
+          this.position2 = "HC";
+
+          console.log('Data signatories kosong');
+        }
+        
       })
       .catch(error => {
-        if (error.response.status === 500) {
+        if (error.response && error.response.status === 500) {
           Swal.fire({
             title: 'Error',
             text: error.response.data.message,
             icon: 'error',
             confirmButtonText: 'OK'
-          })
+          });
         } else {
-          console.log(error.response.data);
+          console.error(error);
         }
       });
   }
+
 
   onDeleteFormDA(form_uuid: string) {
     Swal.fire({
