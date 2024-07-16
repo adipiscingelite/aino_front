@@ -29,6 +29,7 @@ export class AccessGroupComponent implements OnInit {
 
   searchText: string = '';
 
+  profileRoleCode: string = '';
   role_uuid: string = '';
   role_code: string = '';
   role_title: string = '';
@@ -45,6 +46,7 @@ export class AccessGroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchDataRoleGroup();
+    this.profileData();
   }
 
   matchesSearch(item: Role): boolean {
@@ -53,6 +55,26 @@ export class AccessGroupComponent implements OnInit {
       item.role_code.toLowerCase().includes(searchLowerCase) ||
       item.role_title.toLowerCase().includes(searchLowerCase)
     );
+  }
+
+  profileData(): void {
+    const token = this.cookieService.get('userToken');
+
+    axios.get(`${this.apiUrl}/auth/my/profile`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((response) => {
+        console.log(response);
+        // this.user_uuid = response.data.user_uuid;
+        // this.user_name = response.data.user_name;
+        this.profileRoleCode = response.data.role_code;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   fetchDataRoleGroup(): void {
@@ -67,6 +89,8 @@ export class AccessGroupComponent implements OnInit {
       }
     })
   }
+
+  
 
   addRoleModal() {
     $('#addRoleModal').modal('show');

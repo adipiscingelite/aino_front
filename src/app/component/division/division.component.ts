@@ -102,8 +102,10 @@ export class DivisionComponent implements OnInit {
   addDivision() {
     const token = this.cookieService.get('userToken');
 
-    axios.post(`${this.apiUrl}/superadmin/division/add`,
-      { division_code: this.division_code, division_title: this.division_title },
+    axios.post(`${this.apiUrl}/superadmin/division/add`,{
+        division_code: this.division_code, 
+        division_title: this.division_title 
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`

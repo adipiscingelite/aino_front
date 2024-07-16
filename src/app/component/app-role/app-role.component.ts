@@ -47,6 +47,7 @@ export class AppRoleComponent implements OnInit {
   application_title: string = '';
   role_uuid: string = '';
   role_title: string = '';
+  role_code: any;
 
   constructor(
     private cookieService: CookieService,
@@ -63,6 +64,7 @@ export class AppRoleComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchDataAppRole();
+    this.profileData();
 
     this.form = this.fb.group({
       application_uuid: [''],
@@ -101,6 +103,25 @@ export class AppRoleComponent implements OnInit {
         } else {
           console.log(error.response.data.message);
         }
+      });
+  }
+
+  
+  profileData(): void {
+    const token = this.cookieService.get('userToken');
+
+    axios.get(`${this.apiUrl}/auth/my/profile`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((response) => {
+        console.log(response);
+        this.role_code = response.data.role_code;
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 

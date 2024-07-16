@@ -533,7 +533,7 @@ export class FormDAComponent implements OnInit {
           this.name2 = signatories.name2 || '';
           this.position2 = signatories.position2 || '';
         } else {
-          this.name1 = "jawa";
+          this.name1 = "lawa";
           this.position1 = "intern";
           this.name2 = "budi";
           this.position2 = "HC";

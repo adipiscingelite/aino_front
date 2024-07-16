@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h3 class="mb-4">Daftar Grup Akses</h3>
-    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="addRoleModal()"><i class="bi bi-plus-lg"></i>
+    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="addRoleModal()"  *ngIf="profileRoleCode === 'SA'"><i class="bi bi-plus-lg"></i>
       Tambah Grup Akses</button>
   </div>
   <div class="card-body">
@@ -17,7 +17,7 @@
           <tr>
             <th scope="col">Kode</th>
             <th scope="col">Nama</th>
-            <th scope="col">Actions</th>
+            <th scope="col"  *ngIf="profileRoleCode === 'SA'">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -25,9 +25,9 @@
             <ng-container *ngIf="matchesSearch(itemRole)">
               <td>{{ itemRole.role_code }}</td>
               <td>{{ itemRole.role_title }}</td>
-              <td>
+              <td  *ngIf="profileRoleCode === 'SA'">
                 <button class="btn btn-warning btn-sm" (click)="getSpecRole(itemRole.role_uuid)"><i
-                  class="bi bi-pencil-square text-dark"></i></button>
+                  class="bi bi-pencil-square"></i></button>
               </td>
             </ng-container>
           </tr>
@@ -45,26 +45,30 @@
         <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close" ></button>
       </div>
       <div class="modal-body">
-        <form #roleForm="ngForm">
+        <form #addAcessGroupForm="ngForm">
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Kode Role</label>
-            <div class="col-sm-9">
+            <label class="col-form-label">Kode Role</label>
+            <div class="col-sm-12">
               <input type="text" class="form-control" placeholder="Masukkan Kode Akses" [(ngModel)]="role_code"
                 name="role_code" required>
             </div>
           </div>
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Nama Role</label>
-            <div class="col-sm-9">
+            <label class="col-form-label">Nama Role</label>
+            <div class="col-sm-12">
               <input type="text" class="form-control" placeholder="Masukkan Nama Akses" [(ngModel)]="role_title"
                 name="role_title" required>
             </div>
           </div>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" (click)="addRole()" class="btn btn-primary" [disabled]="addAcessGroupForm.invalid">Simpan</button>
+          </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" (click)="addRole()" class="btn btn-primary">Simpan</button>
-      </div>
+      <!-- <div class="modal-footer">
+      </div> -->
     </div>
   </div>
 </div>
@@ -77,17 +81,17 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #roleForm="ngForm">
+        <form #editAcessGroupForm="ngForm">
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Kode Role</label>
-            <div class="col-sm-9">
+            <label class="col-form-label">Kode Role</label>
+            <div class="col-sm-12">
               <input type="text" class="form-control" placeholder="Masukkan Kode Akses" [(ngModel)]="role_code"
                 name="role_code" required>
             </div>
           </div>
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Nama Role</label>
-            <div class="col-sm-9">
+            <label class="col-form-label">Nama Role</label>
+            <div class="col-sm-12">
               <input type="text" class="form-control" placeholder="Masukkan Nama Akses" [(ngModel)]="role_title"
                 name="role_title" required>
             </div>
@@ -110,11 +114,15 @@
               <label class="form-check-label" for="updateCheckbox">Update</label>
             </div>
           </div> -->
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="button" (click)="updateRole()" class="btn btn-primary" [disabled]="editAcessGroupForm.invalid">Simpan</button>
+          </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" (click)="updateRole()" class="btn btn-primary">Simpan</button>
-      </div>
+      <!-- <div class="modal-footer">
+      </div> -->
     </div>
   </div>
 </div>

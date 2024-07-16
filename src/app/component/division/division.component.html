@@ -45,25 +45,27 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #divisionForm="ngForm">
+        <form #addDivisionForm="ngForm">
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Kode Divisi</label>
-            <div class="col-sm-9">
+            <label class="col-form-label">Kode Divisi</label>
+            <div class="col-sm-12">
               <input type="text" class="form-control" placeholder="Masukkan kode divisi" [(ngModel)]="division_code"
                 name="division_code" required>
             </div>
           </div>
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Nama Divisi</label>
-            <div class="col-sm-9">
+            <label class="col-form-label">Nama Divisi</label>
+            <div class="col-sm-12">
               <input type="text" class="form-control" placeholder="Masukkan nama divisi" [(ngModel)]="division_title"
                 name="division_title" required>
             </div>
           </div>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" (click)="addDivision()" class="btn btn-primary" [disabled]="addDivisionForm.invalid">Simpan</button>
+          </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" (click)="addDivision()" class="btn btn-primary">Simpan</button>
       </div>
     </div>
   </div>
@@ -74,28 +76,32 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editDivisionModalLabel">Update Divisi</h5>
+        <h5 class="modal-title" id="editDivisionModalLabel">Edit Divisi</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #divisionForm="ngForm">
+        <form #editDivisionForm="ngForm">
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Kode Divisi</label>
-            <div class="col-sm-9">
+            <label class="col-form-label">Kode Divisi</label>
+            <div class="col-sm-12">
               <input type="text" class="form-control" placeholder="Masukkan kode divisi" [(ngModel)]="division_code"
                 name="division_code" required>
             </div>
           </div>
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Nama Divisi</label>
-            <div class="col-sm-9">
+            <label class="col-form-label">Nama Divisi</label>
+            <div class="col-sm-12">
               <input type="text" class="form-control" placeholder="Masukkan nama divisi" [(ngModel)]="division_title"
                 name="division_title" required>
             </div>
           </div>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" (click)="updateDivision()" class="btn btn-primary" [disabled]="editDivisionForm.invalid">Simpan</button>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" (click)="updateDivision()" class="btn btn-primary">Simpan</button>
       </div>
     </div>

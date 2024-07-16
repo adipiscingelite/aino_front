@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h3>Daftar Otorisasi Aplikasi</h3>
-    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="openModalAdd()"><i class="bi bi-plus-lg"></i> Tambah Otoritas</button>
+    <button class="btn btn-outline-primary mb-3 btn-sm" (click)="openModalAdd()"><i class="bi bi-plus-lg" *ngIf="role_code === 'SA'"></i> Tambah Otoritas</button>
   </div>
   <div class="card-body">
     <div class="input-group mb-3">
@@ -17,7 +17,7 @@
             <th scope="col">No.</th>
             <th scope="col">Nama Aplikasi</th>
             <th scope="col">Nama Role</th>
-            <th scope="col">Action</th>
+            <th scope="col" *ngIf="role_code === 'SA'">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@
               <td scope="row">{{ x+1 }}</td>
               <td scope="row">{{ itemAppRole.application_title }}</td>
               <td scope="row">{{ itemAppRole.role_title }}</td>
-              <td>
+              <td *ngIf="role_code === 'SA'">
                 <button class="btn btn-warning btn-sm" (click)="getSpecAppRole(itemAppRole.application_role_uuid)"><i
                     class="bi bi-pencil-square"></i></button>
                 <button class="btn btn-danger btn-sm ms-2"
@@ -48,7 +48,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #appRoleForm="ngForm">
+        <form #addRoleForm="ngForm">
           <div class="mb-3">
             <div class="col-md-12">
               <label class="col-sm-6 col-form-label">Aplikasi</label>
@@ -69,11 +69,15 @@
               </select>
             </div>
           </div>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="button" (click)="addAppRole()" class="btn btn-primary" [disabled]="addRoleForm.invalid">Simpan</button>
+          </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" (click)="addAppRole()" class="btn btn-primary">Simpan</button>
-      </div>
+      <!-- <div class="modal-footer">
+      </div> -->
     </div>
   </div>
 </div>
@@ -86,7 +90,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #appRoleForm="ngForm">
+        <form #editRoleForm="ngForm">
           <div class="row">
             <div class="col-md-6">
               <label class="col-sm-3 col-form-label">Aplikasi</label>
@@ -107,11 +111,15 @@
                 </select>
             </div>
           </div>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="button" (click)="updateAppRole()" class="btn btn-primary" [disabled]="editRoleForm.invalid">Simpan</button>
+          </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" (click)="updateAppRole()" class="btn btn-primary">Simpan</button>
-      </div>
+      <!-- <div class="modal-footer">
+      </div> -->
     </div>
   </div>
 </div>

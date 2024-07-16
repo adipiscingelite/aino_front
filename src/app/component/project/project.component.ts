@@ -114,6 +114,7 @@ export class ProjectComponent implements OnInit {
     axios
       .get(`${environment.apiUrl2}/project`)
       .then((response) => {
+        console.log(response)
         this.dataListProject = response.data;
         this.projectService.updateDataListProject(this.dataListProject);
       })
@@ -233,17 +234,19 @@ export class ProjectComponent implements OnInit {
         }
       });
   }
-
   updateProject(): void {
-    const productFormValue = this.product.value;
+    const projectData = {
+      product_uuid: this.product_uuid,
+      project_name: this.project_name,
+      project_code: this.project_code,
+      project_manager: this.project_manager
+    };
+    console.log(projectData)
+  
     axios
       .put(
         `${environment.apiUrl2}/superadmin/project/update/${this.project_uuid}`,
-        {
-          product_uuid: productFormValue.product_uuid,
-          project_code: this.project_code,
-          project_manager: this.project_manager,
-        },
+        projectData,
         {
           headers: {
             Authorization: `Bearer ${this.cookieService.get('userToken')}`,
@@ -276,6 +279,5 @@ export class ProjectComponent implements OnInit {
         }
       });
   }
-}
-
+}  
 export { Project };

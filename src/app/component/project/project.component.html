@@ -46,14 +46,14 @@
 
 <!-- Add Project Modal -->
 <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModal" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addProjectModal">Add Project</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #formProjectAdd="ngForm">
+        <form #addProjectForm="ngForm">
           <div class="mb-3">
             <label for="projectName" class="form-label">Nama Project</label>
             <input type="text" class="form-control" id="projectName" placeholder="Masukkan kode Project"
@@ -76,29 +76,32 @@
               <option *ngFor="let itemProduct of dataListProduct" [value]="itemProduct.product_uuid">{{itemProduct.product_name}}</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary" (click)="addProject()">Simpan</button>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary" (click)="addProject()" [disabled]="addProjectForm.invalid">Simpan</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Edit Project Modal -->
 <div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editProjectModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="editProjectModalLabel">Edit Project</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #formProject="ngForm">
+        <form #editProjectForm="ngForm" (ngSubmit)="updateProject()">
           <div class="mb-3">
             <label for="projectName" class="form-label">Nama Project</label>
             <input type="text" class="form-control" id="projectName" placeholder="Masukkan nama Project"
               [(ngModel)]="project_name" name="project_name" required>
           </div>
-          <div>
+          <div class="mb-3">
             <label for="projectCode" class="form-label">Kode Project</label>
             <input type="text" class="form-control" id="projectCode" placeholder="Masukkan kode Project"
               [(ngModel)]="project_code" name="project_code" required>
@@ -112,10 +115,16 @@
             <label for="productName" class="form-label">Pilih Produk</label>
             <select class="form-select" id="productName" [(ngModel)]="product_uuid" name="product_uuid" required>
               <option value="" disabled>Pilih Produk</option>
-              <option *ngFor="let itemProduct of dataListProduct" [value]="itemProduct.product_uuid">{{itemProduct.product_name}}</option>
+              <option *ngFor="let itemProduct of dataListProduct" [value]="itemProduct.product_uuid">
+                {{itemProduct.product_name}}
+              </option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary" (click)="updateProject()">Simpan</button>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary" [disabled]="editProjectForm.invalid">Simpan</button>
+          </div>
         </form>
       </div>
     </div>

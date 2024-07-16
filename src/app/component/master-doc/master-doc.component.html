@@ -49,27 +49,30 @@
         <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #formForm="ngForm">
+        <form #addDocumentForm="ngForm">
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Kode Dokumen</label>
-            <div class="col-sm-9">
+            <label class="col-form-label">Kode Dokumen</label>
+            <div class="col-sm-12">
               <input type="text" class="form-control" placeholder="Masukkan kode dokumen" [(ngModel)]="document_code"
                 name="doc_code" required>
             </div>
           </div>
           <div class="mb-3">
-            <label class="col-sm-3 col-form-label">Nama Dokumen</label>
+            <label class="col-form-label">Nama Dokumen</label>
             <div class="col-sm-9">
               <input type="text" class="form-control" placeholder="Masukkan judul dokumen" [(ngModel)]="document_name"
                 name="doc_title" required>
             </div>
           </div>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary" (click)="addMasterDoc()" [disabled]="addDocumentForm.invalid">Simpan</button>
+          </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button type="button" class="btn btn-primary" (click)="addMasterDoc()">Simpan</button>
-      </div>
+      <!-- <div class="modal-footer">
+      </div> -->
     </div>
   </div>
 </div>
@@ -83,7 +86,7 @@
         <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #formForm="ngForm">
+        <form #editDocumentForm="ngForm">
           <div class="mb-3">
             <label class="col-sm-3 col-form-label">Kode Dokumen</label>
             <div class="col-sm-9">
@@ -98,10 +101,13 @@
                 name="doc_title" required>
             </div>
           </div>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary" (click)="updateMasterDoc()" [disabled]="editDocumentForm.invalid">Simpan</button>
+          </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button type="button" class="btn btn-primary" (click)="updateMasterDoc()">Simpan</button>
-      </div>
+      <!-- <div class="modal-footer">
+      </div> -->
     </div>

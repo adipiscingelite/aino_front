@@ -114,6 +114,7 @@ export class ProductComponent  implements OnInit {
 
   addProduct(): void {
     const token = this.cookieService.get('userToken');
+
     axios.post(`${environment.apiUrl2}/superadmin/product/add`, {
       product_name: this.product_name,
       product_owner: this.product_owner
@@ -126,26 +127,30 @@ export class ProductComponent  implements OnInit {
     .then((response) => {
       console.log(response.data);
       this.fetchDataProduct();
-      $('#addProjectModal').modal('hide');
       Swal.fire({
         icon: 'success',
         title: 'Berhasil',
         text: 'Product baru ditambahkan',
         showConfirmButton: false,
         timer: 1500
-      })
+      });
+      $('#addProductModal').modal('hide');
+      this.product_name = '';
+      this.product_owner = '';
     })
     .catch((error) => {
-      console.log(error);
       if (error.response.status === 400 || error.response.status === 422 || error.response.status === 500) {
         Swal.fire({
           title: 'Error',
           text: error.response.data.message,
-          icon: 'error',
-          showConfirmButton: false,
-          timer: 1500
-        })
-        $('#addProductModal').modal('hide');
+          icon: 'error'
+        });
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: 'Terjadi kesalahan',
+          icon: 'error'
+        });
       }
     });
   }
