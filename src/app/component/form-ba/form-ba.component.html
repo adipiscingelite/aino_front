@@ -245,8 +245,12 @@
                 name="name4-position">
             </div>
           </div>
-            <button type="button" class="btn btn-primary" (click)="addBA()">Simpan</button>
-          </div>
+        </div>
+        <hr>
+        <div class="text-end">
+          <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary" (click)="addBA()">Simpan</button>
+        </div>
         </form>
       </div>
     </div>
@@ -305,10 +309,12 @@
             <label class="form-label">Nama orang yang mendampingi</label>
             <input type="text" class="form-control" [(ngModel)]="didampingi_oleh" name="didampingi_oleh">
           </div>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-primary" (click)="updateBA()">Simpan</button>
+          </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-primary-click" (click)="updateBA()">Simpan</button>
       </div>
     </div>
   </div>

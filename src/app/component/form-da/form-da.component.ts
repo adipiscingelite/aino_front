@@ -1,13 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+} from '@angular/forms';
 import axios from 'axios';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import { FormDaService } from '../component-service/form-da-service/form-da-service.service';
 import { DatePipe } from '@angular/common';
-
-
+import { HostListener } from '@angular/core';
 
 declare var $: any;
 
@@ -28,7 +32,7 @@ interface formsDA {
   rencana_pengujian_perubahan_sistem: string;
   rencana_rilis_perubahan_dan_implementasi: string;
 
-  is_sign: boolean
+  is_sign: boolean;
 
   created_by: string;
   updated_by: string;
@@ -71,16 +75,15 @@ interface Detail {
   name: string;
   position: string;
   role_sign: string;
-  is_sign: boolean
+  is_sign: boolean;
 }
 
 @Component({
   selector: 'app-form-da',
   templateUrl: './form-da.component.html',
-  styleUrls: ['./form-da.component.scss']
+  styleUrls: ['./form-da.component.scss'],
 })
 export class FormDAComponent implements OnInit {
-
   searchText: string = '';
 
   form!: FormGroup;
@@ -122,7 +125,6 @@ export class FormDAComponent implements OnInit {
   role_sign: string = '';
   is_sign: boolean = false;
 
-
   user_uuid: any;
   user_name: any;
   role_code: any;
@@ -148,8 +150,9 @@ export class FormDAComponent implements OnInit {
   roleSign4: string = 'Atasan Penerima';
   roleSign5: string = 'Atasan Pemohon';
 
-
   dataListFormDADetail: Detail[] = [];
+
+  private isModalOpen: boolean = false;
 
   constructor(
     private cookieService: CookieService,
@@ -165,7 +168,6 @@ export class FormDAComponent implements OnInit {
   dataListAdminFormDA: formsDA[] = [];
   dataListUserFormDA: formsDA[] = [];
 
-
   ngOnInit(): void {
     this.profileData();
 
@@ -180,6 +182,7 @@ export class FormDAComponent implements OnInit {
 
     let auxDate = this.substractYearsToDate(new Date(), 0);
     this.maxDate = this.getDateFormateForSearch(auxDate);
+    console.log('rencana',this.rencana_pengembangan_perubahan)
   }
 
   substractYearsToDate(date: Date, years: number): Date {
@@ -194,26 +197,29 @@ export class FormDAComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-
   matchesSearch(item: any): boolean {
     const searchText = this.searchText.toLowerCase();
     return (
-      item.form_name && item.form_name.toLowerCase().includes(searchText) ||
-      item.form_number && item.form_number.toLowerCase().includes(searchText) ||
-      item.form_ticket && item.form_ticket.toLowerCase().includes(searchText) ||
-      item.document_name && item.document_name.toLowerCase().includes(searchText) ||
-      item.project_name && item.project_name.toLowerCase().includes(searchText)
+      (item.form_name && item.form_name.toLowerCase().includes(searchText)) ||
+      (item.form_number &&
+        item.form_number.toLowerCase().includes(searchText)) ||
+      (item.form_ticket &&
+        item.form_ticket.toLowerCase().includes(searchText)) ||
+      (item.document_name &&
+        item.document_name.toLowerCase().includes(searchText)) ||
+      (item.project_name &&
+        item.project_name.toLowerCase().includes(searchText))
     );
   }
 
-
   fetchDataFormDA() {
-    axios.get(`${environment.apiUrl2}/dampak/analisa`)
-      .then(response => {
+    axios
+      .get(`${environment.apiUrl2}/dampak/analisa`)
+      .then((response) => {
         this.dataListAllFormDA = response.data;
         console.log(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.response);
         if (error.response.status === 500) {
           console.log(error.response.data);
@@ -224,11 +230,11 @@ export class FormDAComponent implements OnInit {
   profileData(): void {
     const token = this.cookieService.get('userToken');
 
-    axios.get(`${this.apiUrl}/auth/my/profile`,
-      {
+    axios
+      .get(`${this.apiUrl}/auth/my/profile`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((response) => {
         console.log(response);
@@ -244,7 +250,8 @@ export class FormDAComponent implements OnInit {
   }
 
   listAllDoc(): void {
-    axios.get(`${environment.apiUrl2}/document`)
+    axios
+      .get(`${environment.apiUrl2}/document`)
       .then((response) => {
         this.dataListAllDoc = response.data;
       })
@@ -258,7 +265,8 @@ export class FormDAComponent implements OnInit {
   }
 
   listAllProject(): void {
-    axios.get(`${environment.apiUrl2}/project`)
+    axios
+      .get(`${environment.apiUrl2}/project`)
       .then((response) => {
         this.dataListAllProject = response.data;
       })
@@ -271,20 +279,18 @@ export class FormDAComponent implements OnInit {
       });
   }
 
-
   fetchDataAdminFormDA() {
-    axios.get(`${environment.apiUrl2}/admin/da/all`,
-      {
+    axios
+      .get(`${environment.apiUrl2}/admin/da/all`, {
         headers: {
-          Authorization: `Bearer ${this.cookieService.get('userToken')}`
-        }
+          Authorization: `Bearer ${this.cookieService.get('userToken')}`,
+        },
       })
-      .then(response => {
+      .then((response) => {
         this.dataListAdminFormDA = response.data;
         console.log(response.data);
-
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.status === 500) {
           console.log(error.response.data);
         } else {
@@ -293,18 +299,17 @@ export class FormDAComponent implements OnInit {
       });
   }
 
-
   fetchDataUserFormDA() {
-    axios.get(`${environment.apiUrl2}/api/my/form/da`,
-      {
+    axios
+      .get(`${environment.apiUrl2}/api/my/form/da`, {
         headers: {
-          Authorization: `Bearer ${this.cookieService.get('userToken')}`
-        }
+          Authorization: `Bearer ${this.cookieService.get('userToken')}`,
+        },
       })
-      .then(response => {
+      .then((response) => {
         this.dataListUserFormDA = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.status === 500) {
           console.log(error.response.data);
         } else {
@@ -314,11 +319,12 @@ export class FormDAComponent implements OnInit {
   }
 
   fetchAllUser() {
-    axios.get(`${this.apiUrl}/personal/name/all`)
-      .then(response => {
+    axios
+      .get(`${this.apiUrl}/personal/name/all`)
+      .then((response) => {
         this.dataListAllUser = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.status === 500) {
           console.log(error.response.data);
         } else {
@@ -328,25 +334,65 @@ export class FormDAComponent implements OnInit {
   }
 
   fetchDocumentUUID(): void {
-    axios.get(`${environment.apiUrl2}/form/da/code`)
-      .then(response => {
+    axios
+      .get(`${environment.apiUrl2}/form/da/code`)
+      .then((response) => {
         this.document_uuid = response.data.document_uuid;
         console.log('Document UUID:', this.document_uuid);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching document UUID:', error);
       });
   }
-  
-  
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: Event) {
+  const modals = ['#addModalFormDA', '#updateModalDA', '#detailModalDA'];
+
+  for (const modalId of modals) {
+    const modal = $(modalId);
+    if (modal.hasClass('show')) {
+      modal.modal('hide');
+      event.preventDefault(); // Prevent default back navigation behavior
+      history.pushState(null, '', location.href); // Keep current URL state
+      this.isModalOpen = false;
+      break;
+    }
+  }
+}
+
   openModalAddFormDA() {
     $('#addModalFormDA').modal('show');
+    this.form_ticket = '';
+    this.project_uuid = '';
+    this.nama_analis = '';
+    this.jabatan = '';
+    this.departemen = '';
+    this.jenis_perubahan = '';
+    this.detail_dampak_perubahan = '';
+    this.rencana_pengujian_perubahan_sistem = '';
+    this.rencana_rilis_perubahan_dan_implementasi = '';
+    this.name1 = '';
+    this.position1 = '';
+    this.roleSign1 = '';
+    this.name2 = '';
+    this.position2 = '';
+    this.roleSign2 = '';
+    this.name3 = '';
+    this.position3 = '';
+    this.roleSign3 = '';
+    this.name4 = '';
+    this.position4 = '';
+    this.roleSign4 = '';
+    this.name5 = '';
+    this.position5 = '';
+    this.roleSign5 = '';
   }
 
   addFormDA(): void {
     const token = this.cookieService.get('userToken');
     console.log('Document UUID:', this.document_uuid);
-    
+
     const requestDataFormDA = {
       isPublished: false,
       formData: {
@@ -360,6 +406,7 @@ export class FormDAComponent implements OnInit {
         departemen: this.departemen,
         jenis_perubahan: this.jenis_perubahan,
         detail_dampak_perubahan: this.detail_dampak_perubahan,
+        rencana_pengembangan_perubahan: this.rencana_pengembangan_perubahan,
         rencana_pengujian_perubahan_sistem: this.rencana_pengujian_perubahan_sistem,
         rencana_rilis_perubahan_dan_implementasi: this.rencana_rilis_perubahan_dan_implementasi,
       },
@@ -388,43 +435,50 @@ export class FormDAComponent implements OnInit {
           name: this.name5,
           postion: this.position5,
           role_sign: this.roleSign5,
-        }
+        },
       ],
-    }
+    };
 
     console.log(this.document_uuid);
-    axios.post(`${environment.apiUrl2}/api/add/da`, requestDataFormDA,
-      {
+    console.log('rencana',this.rencana_pengembangan_perubahan)
+    axios
+      .post(`${environment.apiUrl2}/api/add/da`, requestDataFormDA, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    )
-      .then(response => {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
         Swal.fire({
           icon: 'success',
           title: 'SUCCESS',
-          text: response.data.message
-        })
-        $('#addModalFormITCM').modal('hide');
+          text: response.data.message,
+        });
         this.fetchDataFormDA();
         this.fetchDataAdminFormDA();
         this.fetchDataUserFormDA();
+        console.log('rencana',this.rencana_pengembangan_perubahan)
+        // $('#addModalFormDA').modal('hide');
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.response.data.message);
-        if (error.response.status === 401 || error.response.status === 500 || error.response.status === 400) {
+        if (
+          error.response.status === 401 ||
+          error.response.status === 500 ||
+          error.response.status === 400
+        ) {
           Swal.fire({
             icon: 'error',
             title: 'ERROR',
-            text: error.response.data.message
-          })
+            text: error.response.data.message,
+          });
         }
       });
+    $('#addModalFormDA').modal('hide');
   }
 
   getSpecificFormDA(form_uuid: string) {
-    axios.get(`${environment.apiUrl2}/dampak/analisa/${form_uuid}`)
+    axios
+      .get(`${environment.apiUrl2}/dampak/analisa/${form_uuid}`)
       .then((response) => {
         console.log(response);
         $('#updateModalDA').modal('show');
@@ -434,24 +488,28 @@ export class FormDAComponent implements OnInit {
         this.form_ticket = formData.form_ticket;
         this.form_status = formData.form_status;
         this.document_name = formData.document_name;
+        // this.project_uuid = formData.project_uuid; 
         this.project_name = formData.project_name;
         this.nama_analis = formData.nama_analis;
         this.jabatan = formData.jabatan;
         this.departemen = formData.departemen;
         this.jenis_perubahan = formData.jenis_perubahan;
         this.detail_dampak_perubahan = formData.detail_dampak_perubahan;
-        this.rencana_pengembangan_perubahan = formData.rencana_pengembangan_perubahan;
-        this.rencana_pengujian_perubahan_sistem = formData.rencana_pengujian_perubahan_sistem;
-        this.rencana_rilis_perubahan_dan_implementasi = formData.rencana_rilis_perubahan_dan_implementasi;
+        this.rencana_pengembangan_perubahan =
+          formData.rencana_pengembangan_perubahan;
+        this.rencana_pengujian_perubahan_sistem =
+          formData.rencana_pengujian_perubahan_sistem;
+        this.rencana_rilis_perubahan_dan_implementasi =
+          formData.rencana_rilis_perubahan_dan_implementasi;
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.status === 500) {
           Swal.fire({
             title: 'Error',
             text: error.response.data.message,
             icon: 'error',
-            confirmButtonText: 'OK'
-          })
+            confirmButtonText: 'OK',
+          });
         } else {
           console.log(error.response.data);
         }
@@ -459,53 +517,64 @@ export class FormDAComponent implements OnInit {
   }
 
   updateFormDA() {
-    axios.put(`${environment.apiUrl2}/api/dampak/analisa/update/${this.form_uuid}`, {
-      formData: {
-        document_uuid: this.document_uuid,
-        form_ticket: this.form_ticket,
-        project_uuid: this.project_uuid,
-      },
-      data_da: {
-        nama_analis: this.nama_analis,
-        jabatan: this.jabatan,
-        departemen: this.departemen,
-        jenis_perubahan: this.jenis_perubahan,
-        detail_dampak_perubahan: this.detail_dampak_perubahan,
-        rencana_pengujian_perubahan_sistem: this.rencana_pengujian_perubahan_sistem,
-        rencana_rilis_perubahan_dan_implementasi: this.rencana_rilis_perubahan_dan_implementasi,
-      },
-    },
-      {
-        headers: {
-          Authorization: `Bearer ${this.cookieService.get('userToken')}`
+    axios
+      .put(
+        `${environment.apiUrl2}/api/dampak/analisa/update/${this.form_uuid}`,
+        {
+          formData: {
+            document_uuid: this.document_uuid,
+            form_ticket: this.form_ticket,
+            project_uuid: this.project_uuid,
+          },
+          data_da: {
+            nama_analis: this.nama_analis,
+            jabatan: this.jabatan,
+            departemen: this.departemen,
+            jenis_perubahan: this.jenis_perubahan,
+            detail_dampak_perubahan: this.detail_dampak_perubahan,
+            rencana_pengembangan_perubahan: this.rencana_pengembangan_perubahan,
+            rencana_pengujian_perubahan_sistem: this.rencana_pengujian_perubahan_sistem,
+            rencana_rilis_perubahan_dan_implementasi: this.rencana_rilis_perubahan_dan_implementasi,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.cookieService.get('userToken')}`,
+          },
         }
-      })
-      .then(response => {
+      )
+      .then((response) => {
         Swal.fire({
           icon: 'success',
           title: 'SUCCESS',
-          text: response.data.message
-        })
+          text: response.data.message,
+        });
         $('#updateModalDA').modal('hide');
         this.fetchDataFormDA();
         this.fetchDataAdminFormDA();
         this.fetchDataUserFormDA();
       })
-      .catch(error => {
-        if (error.response.status === 404 || error.response.status === 500 || error.response.status === 422 || error.response.status === 400) {
-          console.log(error.response)
+      .catch((error) => {
+        if (
+          error.response.status === 404 ||
+          error.response.status === 500 ||
+          error.response.status === 422 ||
+          error.response.status === 400
+        ) {
+          console.log(error.response);
           Swal.fire({
             title: 'Error',
             text: error.response.data.message,
             icon: 'error',
-            confirmButtonText: 'in'
-          })
+            confirmButtonText: 'in',
+          });
         }
       });
   }
 
   getSpecificFormDADetail(form_uuid: string) {
-    axios.get(`${environment.apiUrl2}/da/${form_uuid}`)
+    axios
+      .get(`${environment.apiUrl2}/da/${form_uuid}`)
       .then((response) => {
         $('#detailModalDA').modal('show');
         console.log(response);
@@ -522,9 +591,12 @@ export class FormDAComponent implements OnInit {
         this.departemen = formData.departemen;
         this.jenis_perubahan = formData.jenis_perubahan;
         this.detail_dampak_perubahan = formData.detail_dampak_perubahan;
-        this.rencana_pengembangan_perubahan = formData.rencana_pengembangan_perubahan;
-        this.rencana_pengujian_perubahan_sistem = formData.rencana_pengujian_perubahan_sistem;
-        this.rencana_rilis_perubahan_dan_implementasi = formData.rencana_rilis_perubahan_dan_implementasi;
+        this.rencana_pengembangan_perubahan =
+          formData.rencana_pengembangan_perubahan;
+        this.rencana_pengujian_perubahan_sistem =
+          formData.rencana_pengujian_perubahan_sistem;
+        this.rencana_rilis_perubahan_dan_implementasi =
+          formData.rencana_rilis_perubahan_dan_implementasi;
 
         if (response.data.signatories !== null) {
           const signatories = response.data.signatories;
@@ -533,22 +605,21 @@ export class FormDAComponent implements OnInit {
           this.name2 = signatories.name2 || '';
           this.position2 = signatories.position2 || '';
         } else {
-          this.name1 = "lawa";
-          this.position1 = "intern";
-          this.name2 = "budi";
-          this.position2 = "HC";
+          this.name1 = 'lawa';
+          this.position1 = 'intern';
+          this.name2 = 'budi';
+          this.position2 = 'HC';
 
           console.log('Data signatories kosong');
         }
-        
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response && error.response.status === 500) {
           Swal.fire({
             title: 'Error',
             text: error.response.data.message,
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
           });
         } else {
           console.error(error);
@@ -556,31 +627,34 @@ export class FormDAComponent implements OnInit {
       });
   }
 
-
   onDeleteFormDA(form_uuid: string) {
     Swal.fire({
-      title: "Konfirmasi",
-      text: "Anda yakin ingin menghapus Formulir ini?",
-      icon: "warning",
+      title: 'Konfirmasi',
+      text: 'Anda yakin ingin menghapus Formulir ini?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya",
-      cancelButtonText: "Tidak",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya',
+      cancelButtonText: 'Tidak',
     }).then((result) => {
       if (result.isConfirmed) {
         this.performDeleteFormDA(form_uuid);
       }
-    })
+    });
   }
 
   performDeleteFormDA(form_uuid: string) {
-    axios.put(`${environment.apiUrl2}/api/form/delete/${form_uuid}`,
-      {}, {
-      headers: {
-        Authorization: `Bearer ${this.cookieService.get('userToken')}`
-      }
-    })
+    axios
+      .put(
+        `${environment.apiUrl2}/api/form/delete/${form_uuid}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${this.cookieService.get('userToken')}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response.data.message);
         Swal.fire({
@@ -598,10 +672,10 @@ export class FormDAComponent implements OnInit {
             title: 'Error',
             text: error.response.data.message,
             icon: 'error',
-            confirmButtonText: 'OK'
-          })
+            confirmButtonText: 'OK',
+          });
         }
-      })
+      });
   }
 }
 

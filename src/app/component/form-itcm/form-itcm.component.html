@@ -207,7 +207,11 @@
                 name="name4-position">
             </div>
           </div>
-          <button type="button" class="btn btn-primary" (click)="addFormITCM()">Simpan</button>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-primary" (click)="addFormITCM()">Simpan</button>
+          </div>
         </form>
       </div>
     </div>
@@ -267,11 +271,15 @@
             <input type="text" class="form-control" name="deskripsi" placeholder="Masukkan deskripsi"
               [(ngModel)]="deskripsi">
           </div>
+          <hr>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-primary" (click)="updateFormITCM()">Simpan</button>
+            </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="updateFormITCM()">Simpan</button>
-      </div>
+      <!-- <div class="modal-footer">
+      </div> -->
     </div>
   </div>
 </div>
